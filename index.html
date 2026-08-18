@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>National E-Governance Service Portal</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #f4f7f6; color: #333; padding-bottom: 30px; }
+        
+        /* Header & Navigation */
+        header { background: #0f2027; background: linear-gradient(to right, #203a43, #0f2027); color: white; padding: 20px; text-align: center; position: relative; }
+        header h1 { font-size: 24px; margin-bottom: 5px; letter-spacing: 0.5px; }
+        header p { font-size: 14px; color: #bdc3c7; }
+        .lang-btn { position: absolute; right: 20px; top: 25px; background: #f39c12; color: white; border: none; padding: 8px 15px; cursor: pointer; border-radius: 4px; font-weight: bold; font-size: 12px; }
+        nav { background: #2c3e50; padding: 12px; text-align: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        nav a { color: white; text-decoration: none; margin: 0 15px; font-size: 15px; font-weight: 500; transition: color 0.2s; }
+        nav a:hover { color: #f39c12; }
+        
+        /* Hero Search Section */
+        .hero { text-align: center; padding: 50px 20px; background: #eef2f3; border-bottom: 1px solid #dcdde1; }
+        .hero h2 { margin-bottom: 20px; color: #2c3e50; font-size: 22px; }
+        .search-container { display: flex; justify-content: center; width: 100%; max-width: 650px; margin: 0 auto; }
+        .search-box { width: 100%; padding: 15px 20px; font-size: 15px; border: 2px solid #bdc3c7; border-radius: 25px 0 0 25px; outline: none; transition: border-color 0.2s; }
+        .search-box:focus { border-color: #2980b9; }
+        .search-btn { padding: 15px 30px; font-size: 15px; background: #27ae60; color: white; border: none; border-radius: 0 25px 25px 0; cursor: pointer; font-weight: bold; transition: background 0.2s; }
+        .search-btn:hover { background: #219150; }
+        
+        /* Service Cards Grid */
+        .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+        .section-title { color: #2c3e50; border-bottom: 3px solid #2980b9; padding-bottom: 10px; margin-bottom: 25px; font-size: 20px; display: inline-block; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 25px; }
+        .card { background: white; padding: 25px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); text-align: center; border-top: 4px solid #2980b9; transition: transform 0.2s, box-shadow 0.2s; }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 6px 18px rgba(0,0,0,0.1); }
+        .card h3 { color: #2c3e50; margin-bottom: 12px; font-size: 18px; }
+        .card p { color: #7f8c8d; font-size: 14px; margin-bottom: 20px; line-height: 1.5; }
+        .card button { background: #2980b9; color: white; border: none; padding: 10px 22px; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 14px; transition: background 0.2s; }
+        .card button:hover { background: #1f6391; }
+        
+        /* Live Stepper Tracker Section */
+        .tracking-section { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-top: 45px; border: 1px solid #e2e8f0; }
+        .tracking-section h3 { color: #2c3e50; font-size: 18px; margin-bottom: 5px; }
+        .tracking-id { color: #7f8c8d; font-size: 13px; margin-bottom: 25px; font-style: italic; }
+        .timeline { display: flex; justify-content: space-between; position: relative; margin: 30px 0 10px 0; }
+        .timeline::before { content: ''; position: absolute; top: 15px; left: 0; width: 100%; height: 4px; background: #e2e8f0; z-index: 1; }
+        .timeline-progress { content: ''; position: absolute; top: 15px; left: 0; width: 66%; height: 4px; background: #27ae60; z-index: 1; }
+        .step { position: relative; z-index: 2; text-align: center; background: white; padding: 0 15px; }
+        .circle { width: 34px; height: 34px; background: #27ae60; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px auto; font-weight: bold; font-size: 14px; box-shadow: 0 0 0 4px white; }
+        .circle.active { background: #27ae60; animation: pulse 2s infinite; }
+        .circle.pending { background: #bdc3c7; color: #7f8c8d; }
+        .step p { font-size: 14px; font-weight: 600; color: #2c3e50; }
+        .step span { font-size: 12px; color: #7f8c8d; display: block; margin-top: 4px; }
+        
+        /* Footer styling */
+        footer { background: #2c3e50; color: white; text-align: center; padding: 25px 20px; margin-top: 60px; border-radius: 4px; }
+        footer p { font-size: 14px; color: #ecf0f1; }
+        footer .meta-links { margin-top: 8px; font-size: 12px; color: #bdc3c7; }
+
+        /* Responsive Breakpoints (Media Queries requirement) */
+        @media (max-width: 768px) {
+            nav { display: flex; flex-direction: column; gap: 10px; }
+            nav a { margin: 5px 0; display: block; }
+            .search-container { flex-direction: column; gap: 10px; padding: 0 10px; }
+            .search-box { border-radius: 25px; text-align: center; }
+            .search-btn { border-radius: 25px; width: 100%; }
+            .timeline { flex-direction: column; align-items: flex-start; gap: 30px; margin-left: 20px; }
+            .timeline::before, .timeline-progress { display: none; }
+            .step { display: flex; text-align: left; gap: 15px; align-items: center; background: transparent; padding: 0; }
+            .step p { margin-bottom: 0; }
+            .circle { margin: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>GOVERNMENT OF INDIA | DIGITAL E-GOVERNANCE SERVICE HUB</h1>
+        <p>Unified Window Access for Fast, Transparent, and Secure Public Sector Deliverables</p>
+        <button class="lang-btn">हिन्दी / Hindi</button>
+    </header>
+
+    <nav>
+        <a href="#home">Home Dashboard</a>
+        <a href="#services">All Departments</a>
+        <a href="#tracker">Track Application</a>
+        <a href="#help">Helpline Desk</a>
+    </nav>
+
+    <div class="hero" id="home">
+        <h2>Discover Citizen Services & Schemes Online</h2>
+        <div class="search-container">
+            <input type="text" class="search-box" placeholder="Type service name (e.g., Income Certificate, Ration Card, Passport)...">
+            <button class="search-btn">Search</button>
+        </div>
+    </div>
+
+    <div class="container" id="services">
+        <h2 class="section-title">Core Operational Departments</h2>
+        
+        <div class="grid">
+            <div class="card">
+                <h3>Revenue Department</h3>
+                <p>Apply online for verified Income, Caste, Domicile, and Land record certification files securely.</p>
+                <button>Apply Now</button>
+            </div>
+            <div class="card" style="border-top-color: #27ae60;">
+                <h3>Food & Civil Supplies</h3>
+                <p>Issue new smart ration cards, modify existing family logs, and track fair price allocation models.</p>
+                <button style="background: #27ae60;">Apply Now</button>
+            </div>
+            <div class="card" style="border-top-color: #e67e22;">
+                <h3>Ministry of Health</h3>
+                <p>Register records for national health cards, book immunizations, and view diagnostics validation sheets.</p>
+                <button style="background: #e67e22;">Apply Now</button>
+            </div>
+            <div class="card" style="border-top-color: #9b59b6;">
+                <h3>Education & Welfare</h3>
+                <p>Process verified student scholarship logs, track criteria, and apply for technical skill training vouchers.</p>
+                <button style="background: #9b59b6;">Apply Now</button>
+            </div>
+        </div>
+
+        <div class="tracking-section" id="tracker">
+            <h3>Live Application Tracking System (LATS)</h3>
+            <p class="tracking-id">Unique Ref ID: #EGOV-9827411 (Updated: Real-time)</p>
+            <div class="timeline">
+                <div class="step">
+                    <div class="circle">✓</div>
+                    <p>Form Submitted</p>
+                    <span>Aug 18, 01:22 PM</span>
+                </div>
+                <div class="step">
+                    <div class="circle">✓</div>
+                    <p>Document Validation</p>
+                    <span>Aug 18, 01:40 PM</span>
+                </div>
+                <div class="step">
+                    <div class="circle active">3</div>
+                    <p>Officer Verification</p>
+                    <span>In-Progress (Pending)</span>
+                </div>
+                <div class="step">
+                    <div class="circle pending">4</div>
+                    <p style="color: #a0aec0;">Certificate Issued</p>
+                    <span>Awaiting Approval</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>National Toll-Free Helpline: 1800-111-2222 | Support Email: technical-desk@egov.gov.in</p>
+        <p class="meta-links">© 2026 Department of Information Technology. Compliance Matrix: WCAG 2.1 Level AAA. All Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>
